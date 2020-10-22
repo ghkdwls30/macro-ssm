@@ -196,7 +196,9 @@ namespace SSM
                         user.status = "[2]대기";
 
                         // 이미지 다운로드
-                        string url = element.FindElement(By.CssSelector(".user-img img")).GetAttribute("src");
+                        string url = element.FindElement(By.CssSelector(".user-img .user-img__image")).GetCssValue("background-image");
+                        url = url.Replace("url(\"", "").Replace("\")", "");
+                        Console.WriteLine(url);
                         if (!url.Contains("noimage"))
                         {
                             DownloadProfileImage(url, user.id);
@@ -281,7 +283,7 @@ namespace SSM
                     element.SendKeys(u.pwd);
 
                     // 가입버튼 클릭
-                    element = backgroundDriver.FindElement(By.ClassName("hALIIK"));
+                    element = backgroundDriver.FindElement(By.ClassName("kMxQNN"));
                     element.Click();
 
                     // 대기
@@ -316,6 +318,9 @@ namespace SSM
                     }
 
                     // 년도
+                    if (u.year.CompareTo("2006") > 0) {
+                        u.year = "2006";
+                    }                   
                     element = backgroundDriver.FindElement(By.CssSelector(string.Format("select.year option[value='{0}']", u.year)));
                     element.Click();
 
@@ -334,13 +339,17 @@ namespace SSM
                         element.SendKeys(SAVE_IMAGE_PATH + u.id + ".jpg");
                     }
 
+                    // 전체동의
+                    backgroundDriver.FindElement(By.CssSelector("input[name='agree-all']")).Click();                    
+
+
                     // 버튼클릭
                     element = backgroundDriver.FindElement(By.ClassName("submit-btn"));
                     element.Click();
 
                     try
                     {
-                        WaitForVisivle(backgroundDriver, By.ClassName("user-profile-button"), 10);
+                        WaitForVisivle(backgroundDriver, By.ClassName("profile"), 10);
                     }
                     catch (Exception ex)
                     {
@@ -1165,7 +1174,7 @@ namespace SSM
             cOptions.AddArguments("--window-size=1280,1080");
             cOptions.AddArguments("--incognito");
 
-            if (isHide)
+            if (false)
             {
                 cOptions.AddArguments("headless");
             }
@@ -1521,8 +1530,11 @@ namespace SSM
                     user.day = CommonUtil.MakeRandomValue(1, 28).ToString();
                     user.status = "[2]대기";
 
+                    
                     // 이미지 다운로드
-                    string url = element.FindElement(By.CssSelector(".user-img img")).GetAttribute("src");
+                    string url = element.FindElement(By.CssSelector(".user-img .user-img__image")).GetCssValue("background-image");
+                    url = url.Replace("url(\"", "").Replace("\")", "");
+                    Console.WriteLine(url);
                     if (!url.Contains("noimage"))
                     {
                         DownloadProfileImage(url, user.id);
