@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.WaitHelpers;
 using SSM;
 using SSM.Model;
 using SSM.Util;
@@ -631,7 +632,9 @@ namespace SSM
                             if (r.TotalCommCnt == r.CommCnt) excludePickList.Add(3);
 
                             int pickNumber = CommonUtil.MakeRandomValue(1, 3, excludePickList);
-                            
+                            //pickNumber = 3;
+
+
                             if (pickNumber == 1)
                             {
                                 // 좋아요
@@ -895,8 +898,34 @@ namespace SSM
 
         private void DoComment(IWebDriver driver, string v)
         {
-            IWebElement e = driver.FindElement(By.CssSelector(".comment-wrapper.op-comment-component textarea.input.op-input"));
-            e.Click();
+
+
+            // SSM 댓글 어뷰징 방지로 인해 2가지 텍스트에어리어로 가상으로 입력받음 씹새끼들 그래서 아래처럼 코딩함
+            IWebElement e = null;
+
+            try
+            {
+                e = driver.FindElement(By.XPath("//*[@id='int7-cg']/div[3]/label/div/textarea[1]"));
+                e.Click();
+            }
+            catch (Exception ex) {
+                e = driver.FindElement(By.XPath("//*[@id='int7-var1']/div[3]/label/div/textarea[1]"));
+                e.Click();
+            }
+            
+            //*[@id="int7-cg"]/div[3]/label/div/textarea[1]
+
+            //IWebElement e = driver.FindElement(By.CssSelector(".comment-wrapper.op-comment-component textarea.input.op-input"));
+            //IWebElement e = driver.FindElement(By.XPath("//*[@id='int7-var1']/div[3]/label/div/textarea[1]"));
+            //e.SendKeys(Keys.Enter);
+
+
+
+            //IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+
+
+            //js.ExecuteAsyncScript("arguments[0].click();", e);
 
             WaitSecond(1);
 
