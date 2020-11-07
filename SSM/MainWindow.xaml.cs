@@ -689,7 +689,7 @@ namespace SSM
                             // 상품명 업데이트
                             if (g.GoodsName == null || g.GoodsName.Trim().Length == 0)
                             {
-                                ReadOnlyCollection<IWebElement> e = driver.FindElements(By.CssSelector(".goods-name, .MeuBt"));
+                                ReadOnlyCollection<IWebElement> e = driver.FindElements(By.XPath("//*[@id='app']/div/div[1]/div[1]/p[2]"));
                                 sqlUtil.UpdateGoodsNameByGoodsId(g.GoodsId, e[0].Text);
                             }
 
